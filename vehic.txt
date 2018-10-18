@@ -1,4 +1,4 @@
-#Placa		#Marca		#Modelo		#Peso	   #Color
+#Placa	       	#Marca	       	#Modelo	       	#Peso	    #Color
 
 @12323GT3       @Nissan         @2003           @346Kg     @Rojo
 @12YYH52        @BMW            @2017           @346Kg     @Azul
@@ -76,5 +76,3 @@
 @eeregg3        @Opel           @2017           @800kg     @Amarillo
 @12gfg23        @Nissan         @2008           @700kg     @Rojo
 @1232263        @BMW            @2018           @600kg     @Negro
-
-
