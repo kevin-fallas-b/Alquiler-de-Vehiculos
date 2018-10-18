@@ -6,7 +6,7 @@
   fbuff  db ? ;buffer del archivo text
 
 .code
-  .startup 
+  .startup
     mov ax,03h ;sirve para limpiar la pantalla
     int 10h ;sirve para limpiar la pantalla
     call abrirTXT
@@ -32,6 +32,13 @@
     int 21h
     cmp ax,0 ;revisa si leyo 0 bytes, si es 0, fin de archivo
     jz finTXT ; si leyo 0 bytes, brincar a fin de archivo
+    mov ah,'#'
+    mov al,fbuff;meter byte leido en al
+    cmp ah,al ;revisar si el caracter leido es un #
+    je leerTXT ; si lo es brincar a leertxt
+    mov ah,'@'
+    cmp ah,al ;misma comparacion de arriba
+    je leerTXT
     mov  dl,fbuff ;no, load file character
     mov ah,2
     int 21h
