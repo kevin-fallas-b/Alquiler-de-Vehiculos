@@ -4,6 +4,7 @@
   filename db 'vehiculo.txt',0
   handle dw ?
   fbuff  db ? ;buffer del archivo text
+  contador db 10
 
 .code
   .startup
@@ -25,6 +26,7 @@
 
 
   leerTXT proc near
+
     mov ah,3fh
     mov bx,handle
     lea dx,fbuff
@@ -38,13 +40,24 @@
     je leerTXT ; si lo es brincar a leertxt
     mov ah,'@'
     cmp ah,al ;misma comparacion de arriba
-    je leerTXT
+    je loopCarros ; si es final de linea disminuye el contador
     mov  dl,fbuff ;no, load file character
     mov ah,2
     int 21h
     jmp leerTXT ;repite la funcion hasta que se acabe
 
+  loopCarros:
+  sub contador, 1  ;reduce el contador
+  mov ah, contador
+  mov al, 0
+  cmp ah,al        ;si el contador es 0
+  je salir
+  jmp leerTXT
+
+
   finTXT: ret
   leerTXT endp
+
+  salir: .exit
 
 end
