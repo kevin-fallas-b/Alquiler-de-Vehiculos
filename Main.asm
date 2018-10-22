@@ -12,8 +12,10 @@
     int 10h ;sirve para limpiar la pantalla
     call abrirTXT
     call leerTXT
-    ;call esperarflecha
-    ;call leerTXT
+    call esperarflecha
+    call leerTXT
+    call esperarflechaAtras
+    call leerTXT
     .exit
 
 
@@ -47,6 +49,8 @@
     int 21h
     jmp leerTXT ;repite la funcion hasta que se acabe
 
+  leerTXT endp
+  
   loopCarros:
   sub contador, 1  ;reduce el contador
   mov ah, contador
@@ -58,20 +62,50 @@
 
   finTXT:
   mov contador,10
-  call esperarflecha
-  ;mov contador, ah
-  ;ret
-  leerTXT endp
+  ret
+
 
   salir: .exit
 
-  esperarflecha:
+  esperarflecha proc near
   mov ah,0      ;0 en ah dice que recibe la tecla estripada
   int 16h       ; int 16h es la encargada de controlar el teclado
   cmp ah,48h    ; 48h == hexadecimal para la flecha de arriba, revisa si la tecla estripada es flecha arriba
   jne esperarflecha; si no lo es, seguir esperando
   mov ax,03h ;sirve para limpiar la pantalla
   int 10h ;sirve para limpiar la pantalla
-  call leerTXT
-  ;ret           ;si si era la flecha de arriba ret a main y seguir con procedimientos
+  ret           ;si si era la flecha de arriba ret a main y seguir con procedimientos
+  esperarflecha endp
+
+  esperarflechaAtras proc near
+  mov ah,0      ;0 en ah dice que recibe la tecla estripada
+  int 16h       ; int 16h es la encargada de controlar el teclado
+  cmp ah,25h    ; 25h == hexadecimal para k, revisa si la tecla estripada es flecha arriba
+  jne esperarflechaAtras; si no lo es, seguir esperando
+  mov ax,03h ;sirve para limpiar la pantalla
+  int 10h ;sirve para limpiar la pantalla
+  call moverHandleatras
+  ret
+  esperarflechaAtras endp
+
+
+  moverHandleatras proc near
+  mov ah,3fh
+  mov bx,handle
+  lea dx,fbuff
+  mov cx,-1 ;leer solo un btye hacia atras
+  ;hasta aqui lo que hice es mover el handle para atras, revisar si es @, si lo es, restar contador en 1
+  mov ah,'@'
+  mov al,fbuff;meter byte leido en al
+  cmp ah,al ;revisar si el caracter leido es un @
+  jne moverHandleatras ;si no lo es, seguir leyendo hacia atras
+  sub contador, 1  ;reduce el contador
+  mov ah, contador
+  mov al, 0
+  cmp ah,al        ;si el contador es 0
+  jne moverHandleatras
+  mov contador,10
+  ret
+  moverHandleatras endp
+
 end
