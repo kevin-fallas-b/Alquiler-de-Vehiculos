@@ -70,6 +70,8 @@
   int 16h       ; int 16h es la encargada de controlar el teclado
   cmp ah,48h    ; 48h == hexadecimal para la flecha de arriba, revisa si la tecla estripada es flecha arriba
   jne esperarflecha; si no lo es, seguir esperando
+  mov ax,03h ;sirve para limpiar la pantalla
+  int 10h ;sirve para limpiar la pantalla
   call leerTXT
   ;ret           ;si si era la flecha de arriba ret a main y seguir con procedimientos
 end
