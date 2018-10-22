@@ -12,6 +12,8 @@
     int 10h ;sirve para limpiar la pantalla
     call abrirTXT
     call leerTXT
+    ;call esperarflecha
+    ;call leerTXT
     .exit
 
 
@@ -26,7 +28,6 @@
 
 
   leerTXT proc near
-
     mov ah,3fh
     mov bx,handle
     lea dx,fbuff
@@ -51,13 +52,24 @@
   mov ah, contador
   mov al, 0
   cmp ah,al        ;si el contador es 0
-  je salir
+  je finTXT        ;mandar a dejar de imprimir
   jmp leerTXT
 
 
-  finTXT: ret
+  finTXT:
+  mov contador,10
+  call esperarflecha
+  ;mov contador, ah
+  ;ret
   leerTXT endp
 
   salir: .exit
 
+  esperarflecha:
+  mov ah,0      ;0 en ah dice que recibe la tecla estripada
+  int 16h       ; int 16h es la encargada de controlar el teclado
+  cmp ah,48h    ; 48h == hexadecimal para la flecha de arriba, revisa si la tecla estripada es flecha arriba
+  jne esperarflecha; si no lo es, seguir esperando
+  call leerTXT
+  ;ret           ;si si era la flecha de arriba ret a main y seguir con procedimientos
 end
