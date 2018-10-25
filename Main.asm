@@ -2,7 +2,8 @@
 .stack 100h
 .data
   filename db 'vehiculo.txt',0
-  teclaInc db 'Tecla incorrecta.\nD - 10 sig\nA - 10 ant.','$'
+  teclaInc db 'Tecla incorrecta. D - 10 sig. A - 10 ant.','$'
+  salta db 10,13,'$'
   handle dw ?
   fbuff  db ? ;buffer del archivo text
   contador db 10
@@ -64,7 +65,16 @@
 
   salir: .exit
 
-  teclaIncorrecta proc near
+  saltoLinea proc near ;funcion super sencilla que me salta una linea en consola
+  lea dx, salta
+  mov ah, 09h
+  int 21h
+  ret
+  saltoLinea endp
+
+
+  teclaIncorrecta proc near ; funcion que imprime en pantalla que estripo una tecla invalida, dice las teclas validas y que intente de nuevo
+  call saltoLinea
   lea dx,teclaInc
   mov ah, 09h
   int 21h
@@ -72,6 +82,7 @@
   teclaIncorrecta endp
 
   esperarTecla:;metodo que se encicla mientras el programa esta activo
+  call saltoLinea
   mov ah,0      ;0 en ah dice que recibe la tecla estripada
   int 16h       ; int 16h es la encargada de controlar el teclado
   cmp ah,1eh    ; 1eh == hexadecimal para A, revisa si la tecla estripada == A
@@ -92,13 +103,13 @@
   ret
   limpiarPantalla endp
 
-  leerAdelante proc near
+  leerAdelante proc near ; metodo que limpia la pantalla e imprime los 10 proximos carros en el txt
   call limpiarPantalla
   call leerTXT
   jmp esperarTecla
   leerAdelante endp
 
-  leerAtras proc near
+  leerAtras proc near ; metodo que limpia la pantalla e imprime los 10 carros anteriores en el txt
   call limpiarPantalla
   call moverHandleatras
   call leerTXT
@@ -106,11 +117,19 @@
   leerAtras endp
 
 
-  moverHandleatras proc near
+  moverHandleatras proc near ;este metodo se encarga de mover el handle dentro del txt 10 carros atras, para luego imprimir normalmente
+  ;mov cx,-1 ;leer solo un btye hacia atras
+  ;codigo internet
+  mov al, 1        ; relative to current file position
+  mov ah, 42h      ; service for seeking file pointer
+  mov bx, handle
+  mov cx, 0ffffh       ; upper half of lseek 32-bit offset (cx:dx)
+  mov dx, 0ffffh       ; moves file pointer one byte backwards (This is important)
+  int 21h
+  ;fin codigo internet
   mov ah,3fh
   mov bx,handle
   lea dx,fbuff
-  mov cx,-1 ;leer solo un btye hacia atras
   ;hasta aqui lo que hice es mover el handle para atras, revisar si es @, si lo es, restar contador en 1
   mov ah,'@'
   mov al,fbuff;meter byte leido en al
