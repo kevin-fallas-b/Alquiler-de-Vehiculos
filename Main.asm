@@ -2,6 +2,7 @@
 .stack 100h
 .data
   filename db 'vehiculo.txt',0
+  teclaInc db 'Tecla incorrecta.\nD - 10 sig\nA - 10 ant.','$'
   handle dw ?
   fbuff  db ? ;buffer del archivo text
   contador db 10
@@ -63,6 +64,12 @@
 
   salir: .exit
 
+  teclaIncorrecta proc near
+  lea dx,teclaInc
+  mov ah, 09h
+  int 21h
+  jmp esperarTecla
+  teclaIncorrecta endp
 
   esperarTecla:;metodo que se encicla mientras el programa esta activo
   mov ah,0      ;0 en ah dice que recibe la tecla estripada
@@ -75,7 +82,7 @@
   je moverHandleatras ; si lo es, llamar funcion que busca
   cmp ah,01h    ; 01h == hexadecimal para esc, revisa si la tecla estripada == esc
   je salir ; si lo es, llamar funcion que termina programa
-  jmp esperarTecla ;si la tecla no corresponda a una de las indicadas, volver a intentar
+  call teclaIncorrecta ;si llego aqui significa que se presiono una tecla incorrecta
 
 
 
