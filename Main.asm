@@ -8,14 +8,10 @@
 
 .code
   .startup
-    mov ax,03h ;sirve para limpiar la pantalla
-    int 10h ;sirve para limpiar la pantalla
+    call limpiarPantalla
     call abrirTXT
     call leerTXT
-    call esperarflecha
-    call leerTXT
-    call esperarflechaAtras
-    call leerTXT
+    jmp esperarTecla; metodo que se encicla
     .exit
 
 
@@ -50,7 +46,7 @@
     jmp leerTXT ;repite la funcion hasta que se acabe
 
   leerTXT endp
-  
+
   loopCarros:
   sub contador, 1  ;reduce el contador
   mov ah, contador
@@ -61,32 +57,46 @@
 
 
   finTXT:
-  mov contador,10
-  ret
+    mov contador,10
+    ret
 
 
   salir: .exit
 
-  esperarflecha proc near
-  mov ah,0      ;0 en ah dice que recibe la tecla estripada
-  int 16h       ; int 16h es la encargada de controlar el teclado
-  cmp ah,48h    ; 48h == hexadecimal para la flecha de arriba, revisa si la tecla estripada es flecha arriba
-  jne esperarflecha; si no lo es, seguir esperando
-  mov ax,03h ;sirve para limpiar la pantalla
-  int 10h ;sirve para limpiar la pantalla
-  ret           ;si si era la flecha de arriba ret a main y seguir con procedimientos
-  esperarflecha endp
 
-  esperarflechaAtras proc near
+  esperarTecla:;metodo que se encicla mientras el programa esta activo
   mov ah,0      ;0 en ah dice que recibe la tecla estripada
   int 16h       ; int 16h es la encargada de controlar el teclado
-  cmp ah,25h    ; 25h == hexadecimal para k, revisa si la tecla estripada es flecha arriba
-  jne esperarflechaAtras; si no lo es, seguir esperando
+  cmp ah,1eh    ; 1eh == hexadecimal para A, revisa si la tecla estripada == A
+  je leerAtras; si lo es, llamar funcion que lee hacia atras
+  cmp ah,20h    ; 20h == hexadecimal para D,revisa si la tecla estripada == D
+  je leerAdelante ; si lo es, llamar funcion que lee hacia adelante
+  cmp ah,30h    ; 30h == hexadecimal para B,revisa si la tecla estripada == B
+  je moverHandleatras ; si lo es, llamar funcion que busca
+  cmp ah,01h    ; 01h == hexadecimal para esc, revisa si la tecla estripada == esc
+  je salir ; si lo es, llamar funcion que termina programa
+  jmp esperarTecla ;si la tecla no corresponda a una de las indicadas, volver a intentar
+
+
+
+  limpiarPantalla proc near
   mov ax,03h ;sirve para limpiar la pantalla
   int 10h ;sirve para limpiar la pantalla
-  call moverHandleatras
   ret
-  esperarflechaAtras endp
+  limpiarPantalla endp
+
+  leerAdelante proc near
+  call limpiarPantalla
+  call leerTXT
+  jmp esperarTecla
+  leerAdelante endp
+
+  leerAtras proc near
+  call limpiarPantalla
+  call moverHandleatras
+  call leerTXT
+  jmp esperartecla
+  leerAtras endp
 
 
   moverHandleatras proc near
