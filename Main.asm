@@ -85,9 +85,9 @@
   call saltoLinea
   mov ah,0      ;0 en ah dice que recibe la tecla estripada
   int 16h       ; int 16h es la encargada de controlar el teclado
-  cmp ah,1eh    ; 1eh == hexadecimal para A, revisa si la tecla estripada == A
+  cmp ah,48h    ; 48h == hexadecimal para flecha abajo, revisa si la tecla estripada == flecha arriba
   je leerAtras; si lo es, llamar funcion que lee hacia atras
-  cmp ah,20h    ; 20h == hexadecimal para D,revisa si la tecla estripada == D
+  cmp ah,50h    ; 50h == hexadecimal para flecha arriba,revisa si la tecla estripada == flecha abajo
   je leerAdelante ; si lo es, llamar funcion que lee hacia adelante
   cmp ah,30h    ; 30h == hexadecimal para B,revisa si la tecla estripada == B
   je moverHandleatras ; si lo es, llamar funcion que busca
