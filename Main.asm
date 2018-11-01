@@ -2,7 +2,7 @@
 .stack 100h
 .data
   filename db 'vehiculo.txt',0
-  teclaInc db 'Tecla incorrecta. D - 10 sig. A - 10 ant.','$'
+  teclaInc db 'Tecla incorrecta. flecha arriba o flecha abajo','$'
   salta db 10,13,'$'
   handle dw ?
   fbuff  db ? ;buffer del archivo text
@@ -103,11 +103,19 @@
 
   esperarTecla:;metodo que se encicla mientras el programa esta activo
   call saltoLinea
+<<<<<<< HEAD
   mov ah,0        ;0 en ah dice que recibe la tecla estripada
   int 16h         ;int 16h es la encargada de controlar el teclado
   cmp ah,1eh      ;1eh == hexadecimal para A, revisa si la tecla estripada == A
   je leerAtras    ;si lo es, llamar funcion que lee hacia atras
   cmp ah,20h      ;20h == hexadecimal para D,revisa si la tecla estripada == D
+=======
+  mov ah,0      ;0 en ah dice que recibe la tecla estripada
+  int 16h       ; int 16h es la encargada de controlar el teclado
+  cmp ah,48h    ; 48h == hexadecimal para flecha abajo, revisa si la tecla estripada == flecha arriba
+  je leerAtras; si lo es, llamar funcion que lee hacia atras
+  cmp ah,50h    ; 50h == hexadecimal para flecha arriba,revisa si la tecla estripada == flecha abajo
+>>>>>>> 39d01f0ca441e57c6fbc929b570f6f180d272063
   je leerAdelante ; si lo es, llamar funcion que lee hacia adelante
   cmp ah,30h      ;30h == hexadecimal para B,revisa si la tecla estripada == B
   je moverHandleatras ; si lo es, llamar funcion que busca
