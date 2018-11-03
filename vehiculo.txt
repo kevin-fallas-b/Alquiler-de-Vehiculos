@@ -1,76 +1,76 @@
-#12323GT3       #Nissan         #2003           #346Kg     #Rojo@
-#12YYH52        #BMW            #2017           #346Kg     #Azul@
-#155G323        #Audi           #2008           #700Kg     #Rojo@
-#123FR23        #Toyota         #2000           #3333kg    #Azul@
-#123RFR3        #Bentley        #2010           #800kg     #Blanco@
-#12SOL23        #Ford           #2017           #500kg     #Rojo@
-#12HIL23        #Ford           #2018           #700Kg     #Verde@
-#123GG3F        #Ferrari        #2017           #460kg     #Blanco@
-#12HH323        #Fiat           #2009           #400kg     #Blanco@
-#123HHH2        #BMW            #2007           #399kg     #Morado@
-#1232GGT        #Bentley        #2017           #450kg     #Rojo@
-#123DGYY        #BMW            #2010           #456kg     #Morado2
-#123XXX3        #Nissan         #2018           #600kg     #Rojo@
-#12FSA23        #Toyota         #1999           #800kg     #Celeste@
-#12D5553        #Bentley        #2015           #700kg     #Blanco@
-#123FDSS        #Ferrari        #2016           #750kg     #Cafe@
-#123R443        #Jeep           #2007           #700Kg     #Rojo@
-#12EEEEE        #Kia            #2017           #600kg     #Celeste@
-#123TGT3        #Jeep           #2007           #800kg     #Verde@
-#12GTGTG        #Audi           #2001           #700Kg     #Cafe@
-#123GGTT        #Lotus          #2003           #700Kg     #Rojo@
-#12FGTYH        #Mazda          #2010           #630kg     #Plateado@
-#123GTGT        #Audi           #2008           #700Kg     #Rojo@
-#123THT3        #Lotus          #2018           #500kg     #Blanco@
-#123THT2        #Bentley        #2007           #700Kg     #Plateado@
-#123THTH        #Toyota         #2006           #500kg     #Plateado@
-#123YTHH        #Mazda          #2007           #700Kg     #Negro@
-#1232THY        #BMW            #2005           #500kg     #Cafe@
-#127TTR3        #Jeep           #2011           #500kg     #Verde@
-#1234444        #Mazda          #2010           #700Kg     #Negro@
-#12GTGTT        #Mecedez        #2014           #500kg     #Amarilo@
-#12TGTGT        #Mercedez       #2014           #670kg     #Negro@
-#1232323        #Ferrari        #2018           #700kg     #Cafe@
-#1JFJF23        #Porsche        #2013           #500kg     #Verde@
-#12FAD23        #Volkswagen     #2017           #500kg     #Cafe@
-#123FF23        #Volvo          #2019           #700Kg     #Amarillo@
-#12RR523        #Porsche        #2017           #630kg     #Plateado@
-#1GFD323        #Scion          #2012           #700Kg     #Gris@
-#FFFV323        #Volkswagen     #2017           #500kg     #Blanco@
-#124R323        #Tesla          #2010           #630kg     #Negro@
-#12JTJT2        #Pontiac        #2001           #500kg     #Naranja@
-#1232323        #Toyota         #2012           #800kg     #Plateado@
-#1YYY323        #Pontiac        #2012           #800kg     #Naranja@
-#12EE323        #Volkswagen     #2012           #800kg     #Negro@
-#133E323        #Pontiac        #2001           #500kg     #Naranja@
-#12RR323        #Porsche        #2010           #700Kg     #Plateado@
-#1R3R323        #Volkswagen     #2001           #800kg     #Blanco@
-#1Y32E23        #BMW            #2010           #900kg     #Blanco@
-#1RE2323        #Honda          #2001           #900kg     #Naranja@
-#FGD2323        #Lamborghini    #2000           #700Kg     #Plateado@
-#SS32323        #Opel           #2000           #500kg     #Plateado@
-#FF32323        #Opel           #2001           #800kg     #Rojo@
-#0032323        #Nissan         #2000           #900kg     #Naranja@
-#12FFFEE        #BMW            #2012           #700Kg     #Negro@
-#1EEWER5        #Land-Rover     #2019           #900kg     #Naranja@
-#125555E        #Nissan         #2019           #800kg     #Amarillo@
-#1232RRR        #Maserati       #2001           #320kg     #Negro@
-#1GGG444        #Lamborghini    #2001           #900kg     #Rojo@
-#1RRRR44        #Maserati       #2001           #700kg     #Blanco@
-#1000000        #Toyota         #2007           #200kg     #Verde@
-#1235555        #Land-Rover     #2016           #700Kg     #Amarillo@
-#1232FFF        #Lanborghini    #2017           #4000kg    #Naranja@
-#1GTTTGF        #Maserati       #2014           #630kg     #Amarillo@
-#GTGTGHF        #BMW            #2013           #500kg     #Naranja@
-#1HYHYYG        #Land-Rover     #2012           #800kg     #Negro@
-#1GHJNHY        #Honda          #2000           #800kg     #Gris@
-#123FC23        #Toyota         #2008           #500kg     #Gris@
-#WWSWXSX        #Nissan         #2008           #460kg     #Naranja@
-#1222SSW        #Honda          #2002           #780kg     #Amarillo@
-#123WWW3        #Toyota         #2019           #800kg     #Gris@
-#1AUAASS        #BMW            #2010           #4000kg    #Blanco@
-#1112222        #Toyota         #2005           #1000kg    #Gris@
-#1232AAA        #Toyota         #2007           #388kg     #Naranja@
-#eeregg3        #Opel           #2017           #800kg     #Amarillo@
-#12gfg23        #Nissan         #2008           #700kg     #Rojo@
-#1232263        #BMW            #2018           #600kg     #Negro@
+#12323GT3#Nissan#2003#346Kg#Rojo@
+#12YYH52#BMW#2017#346Kg#Azul@
+#155G323#Audi#2008#700Kg#Rojo@
+#123FR23#Toyota#2000#3333kg#Azul@
+#123RFR3#Bentley#2010#800kg#Blanco@
+#12SOL23#Ford#2017#500kg#Rojo@
+#12HIL23#Ford#2018#700Kg#Verde@
+#123GG3F#Ferrari#2017#460kg#Blanco@
+#12HH323#Fiat#2009#400kg#Blanco@
+#123HHH2#BMW#2007#399kg#Morado@
+#1232GGT#Bentley#2017#450kg#Rojo@
+#123DGYY#BMW#2010#456kg#Morado2
+#123XXX3#Nissan#2018#600kg#Rojo@
+#12FSA23#Toyota#1999#800kg#Celeste@
+#12D5553#Bentley#2015#700kg#Blanco@
+#123FDSS#Ferrari#2016#750kg#Cafe@
+#123R443#Jeep#2007#700Kg#Rojo@
+#12EEEEE#Kia#2017#600kg#Celeste@
+#123TGT3#Jeep#2007#800kg#Verde@
+#12GTGTG#Audi#2001#700Kg#Cafe@
+#123GGTT#Lotus#2003#700Kg#Rojo@
+#12FGTYH#Mazda#2010#630kg#Plateado@
+#123GTGT#Audi#2008#700Kg#Rojo@
+#123THT3#Lotus#2018#500kg#Blanco@
+#123THT2#Bentley#2007#700Kg#Plateado@
+#123THTH#Toyota#2006#500kg#Plateado@
+#123YTHH#Mazda#2007#700Kg#Negro@
+#1232THY#BMW#2005#500kg#Cafe@
+#127TTR3#Jeep#2011#500kg#Verde@
+#1234444#Mazda#2010#700Kg#Negro@
+#12GTGTT#Mecedez#2014#500kg#Amarilo@
+#12TGTGT#Mercedez#2014#670kg#Negro@
+#1232323#Ferrari#2018#700kg#Cafe@
+#1JFJF23#Porsche#2013#500kg#Verde@
+#12FAD23#Volkswagen#2017#500kg#Cafe@
+#123FF23#Volvo#2019#700Kg#Amarillo@
+#12RR523#Porsche#2017#630kg#Plateado@
+#1GFD323#Scion#2012#700Kg#Gris@
+#FFFV323#Volkswagen#2017#500kg#Blanco@
+#124R323#Tesla#2010#630kg#Negro@
+#12JTJT2#Pontiac#2001#500kg#Naranja@
+#1232323#Toyota#2012#800kg#Plateado@
+#1YYY323#Pontiac#2012#800kg#Naranja@
+#12EE323#Volkswagen#2012#800kg#Negro@
+#133E323#Pontiac#2001#500kg#Naranja@
+#12RR323#Porsche#2010#700Kg#Plateado@
+#1R3R323#Volkswagen#2001#800kg#Blanco@
+#1Y32E23#BMW#2010#900kg#Blanco@
+#1RE2323#Honda#2001#900kg#Naranja@
+#FGD2323#Lamborghini#2000#700Kg#Plateado@
+#SS32323#Opel#2000#500kg#Plateado@
+#FF32323#Opel#2001#800kg#Rojo@
+#0032323#Nissan#2000#900kg#Naranja@
+#12FFFEE#BMW#2012#700Kg#Negro@
+#1EEWER5#Land-Rover#2019#900kg#Naranja@
+#125555E#Nissan#2019#800kg#Amarillo@
+#1232RRR#Maserati#2001#320kg#Negro@
+#1GGG444#Lamborghini#2001#900kg#Rojo@
+#1RRRR44#Maserati#2001#700kg#Blanco@
+#1000000#Toyota#2007#200kg#Verde@
+#1235555#Land-Rover#2016#700Kg#Amarillo@
+#1232FFF#Lanborghini#2017#4000kg#Naranja@
+#1GTTTGF#Maserati#2014#630kg#Amarillo@
+#GTGTGHF#BMW#2013#500kg#Naranja@
+#1HYHYYG#Land-Rover#2012#800kg#Negro@
+#1GHJNHY#Honda#2000#800kg#Gris@
+#123FC23#Toyota#2008#500kg#Gris@
+#WWSWXSX#Nissan#2008#460kg#Naranja@
+#1222SSW#Honda#2002#780kg#Amarillo@
+#123WWW3#Toyota#2019#800kg#Gris@
+#1AUAASS#BMW#2010#4000kg#Blanco@
+#1112222#Toyota#2005#1000kg#Gris@
+#1232AAA#Toyota#2007#388kg#Naranja@
+#eeregg3#Opel#2017#800kg#Amarillo@
+#12gfg23#Nissan#2008#700kg#Rojo@
+#1232263#BMW#2018#600kg#Negro@
