@@ -81,7 +81,7 @@ pos_cursor macro col		;UN TIPO DE "METODO" QUE RECIBE 2 PARAMETROS
     je imprimirPantalla
     mov ah,'@'
     cmp ah,al    ;misma comparacion de arriba
-    je loopCarros ;si es final de linea disminuye el contador
+    je jumpaloopCarros ;si es final de linea disminuye el contador
     mov  dl,fbuff ;no, load file character
     mov [si], dl ;compia el caracter a la variable variable
     inc si
@@ -107,6 +107,12 @@ pos_cursor macro col		;UN TIPO DE "METODO" QUE RECIBE 2 PARAMETROS
 
   leerTXT endp
 
+  finTXT:
+    mov contador,10
+    ret
+  jumpaloopcarros:
+    jmp loopCarros
+    ret
 
   escribirAtxt proc near
   sig:
@@ -118,24 +124,24 @@ pos_cursor macro col		;UN TIPO DE "METODO" QUE RECIBE 2 PARAMETROS
     cmp ax,0     ;revisa si leyo 0 bytes, si es 0, fin de archivo
     jne sig
     ;si llego aqui es que ya estoy al ginal del archivo
-    ;mov al, 1        ; relative to current file position
-    ;mov ah, 42h      ; service for seeking file pointer
-    ;mov bx, handle
-    ;mov cx, -1       ; upper half of lseek 32-bit offset (cx:dx)
-    ;mov dx, -1       ; moves file pointer one byte backwards (This is important)
-    ;int 21h
+    mov al, 1        ; relative to current file position
+    mov ah, 42h      ; service for seeking file pointer
+    mov bx, handle
+    mov cx, -1       ; upper half of lseek 32-bit offset (cx:dx)
+    mov dx, -1       ; moves file pointer one byte backwards (This is important)
+    int 21h
     lea di,carroNuevo
     mov ah, 40h          ;guarda en txt primer caracter
     mov bx, handle       ;guarda en txt primer caracter
     mov cx, 1            ;guarda en txt primer caracter
-    mov dx, [di]  ; buffer that holds the new character to be written
+    lea dx, [di]  ; buffer that holds the new character to be written
     int 21
   guar:
     inc di
     mov ah, 40h          ; service for writing to a file
     mov bx, handle
     mov cx, 1            ; number of bytes to write
-    mov dx, [di]  ; buffer that holds the new character to be written
+    lea dx, [di]  ; buffer that holds the new character to be written
     int 21
     cmp dx,40h
     jne guar
@@ -145,9 +151,9 @@ pos_cursor macro col		;UN TIPO DE "METODO" QUE RECIBE 2 PARAMETROS
     ret
   escribirAtxt endp
 
-  finTXT:
-    mov contador,10
-    ret
+jumpaFinTXT2:
+  jmp finTXT
+  ret
 ;c
 ;final del segmento de manipulacion del txt
 ;empieza segmento de procedimientos repetitivos
@@ -171,7 +177,7 @@ pos_cursor macro col		;UN TIPO DE "METODO" QUE RECIBE 2 PARAMETROS
   mov ah, contador
   mov al, 0
   cmp ah,al        ;si el contador es 0
-  je finTXT        ;mandar a dejar de imprimir
+  je jumpaFinTXT2        ;mandar a dejar de imprimir
   jmp LeerTxt
 
   saltoLinea proc near ;funcion super sencilla que me salta una linea en consola
