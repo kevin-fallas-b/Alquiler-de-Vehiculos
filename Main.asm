@@ -148,7 +148,7 @@ pos_cursor macro col		;UN TIPO DE "METODO" QUE RECIBE 2 PARAMETROS
   finTXT:
     mov contador,10
     ret
-
+;c
 ;final del segmento de manipulacion del txt
 ;empieza segmento de procedimientos repetitivos
   salir: .exit
