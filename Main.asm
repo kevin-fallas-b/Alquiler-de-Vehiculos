@@ -20,6 +20,7 @@
   color db '$$$$$$$$'
   espacios db '     ','$'
   columna db 3
+  carroNuevo db 100 dup('$')
 
 
 
@@ -81,7 +82,7 @@ pos_cursor macro col		;UN TIPO DE "METODO" QUE RECIBE 2 PARAMETROS
     mov ah,'#'
     mov al,fbuff ;meter byte leido en al
     cmp ah,al    ;revisar si el caracter leido es un #
-    je imprespacios
+    je leerTXT
     mov ah,'@'
     cmp ah,al    ;misma comparacion de arriba
     je loopCarros ;si es final de linea disminuye el contador
@@ -210,16 +211,89 @@ ENDP
   imp_texto pedirColor
   pedir_datos color
   call limpiarPantalla
-  imp_texto placa
-  call saltoLinea
-  imp_texto marca
-  call saltoLinea
-  imp_texto modelo
-  call saltoLinea
-  imp_texto peso
-  call saltoLinea
-  imp_texto color
+  call concatenarCarroNuevo
   ingresarCarro endp
+
+  concatenarCarroNuevo proc near;metodo muy repetitivo, no se usa macro ya que se necesitan labels
+    lea si, carroNuevo
+    lea di, placa
+  reppp:
+    mov al,[di]
+    mov [si],al
+    inc si
+    inc di
+    mov ah,[di]
+    cmp ah,0dh
+    je etimar
+    cmp ah,24h
+    jne reppp
+  etimar:
+    mov al,23h
+    mov [si],al
+    inc si
+    lea di, marca
+  rep1:
+    mov al,[di]
+    mov [si],al
+    inc si
+    inc di
+    mov ah,[di]
+    cmp ah,0dh
+    je etimod
+    cmp ah,24h
+    jne rep1
+  etimod:
+    mov al,23h
+    mov [si],al
+    inc si
+    lea di,modelo
+  rep2:
+    mov al,[di]
+    mov [si],al
+    inc si
+    inc di
+    mov ah,[di]
+    cmp ah,0dh
+    je etipes
+    cmp ah,24h
+    jne rep2
+  etipes:
+    mov al,23h
+    mov [si],al
+    inc si
+    lea di, peso
+  rep3:
+    mov al,[di]
+    mov [si],al
+    inc si
+    inc di
+    mov ah,[di]
+    cmp ah,0dh
+    je eticol
+    cmp ah,24h
+    jne rep3
+  eticol:
+    mov al,23h
+    mov [si],al
+    inc si
+    lea di,color
+  rep4:
+    mov al,[di]
+    mov [si],al
+    inc si
+    inc di
+    mov ah,[di]
+    cmp ah,0dh
+    je etifin
+    cmp ah,24h
+    jne rep4
+  etifin:
+    mov al,40h
+    mov [si],al
+    inc si
+    imp_texto carroNuevo
+    ret
+  concatenarCarroNuevo ENDP
 
   segundoJumpaFinTxt:
   jmp jumpaFinTXT
