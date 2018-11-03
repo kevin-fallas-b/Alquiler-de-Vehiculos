@@ -20,7 +20,7 @@
   color db '$$$$$$$$'
   espacios db '     ','$'
   columna db 3
-
+  variable db 16 dup (' '), '$'
 
 
 pos_cursor macro col		;UN TIPO DE "METODO" QUE RECIBE 2 PARAMETROS
@@ -55,40 +55,53 @@ pos_cursor macro col		;UN TIPO DE "METODO" QUE RECIBE 2 PARAMETROS
 
 ;segmento de codigo que manipula el txt
   abrirTXT proc near
-    mov ah,3dh    ;intenta abrir el archivo txt
+    mov ah,3dh      ;intenta abrir el archivo txt
     lea dx,filename
-    mov al,0      ;define permiso lectura y escritura
+    mov al,0         ;define permiso lectura y escritura
     int 21h
     mov handle,ax
     ret
   abrirTXT endp
 
-  imprespacios:
-  pos_cursor columna
-  mov ah, 09h
-  int 21h
-  add columna,1
-  jmp leerTXT
-
   leerTXT proc near
+  lea si, variable
+  loopLeerTxt:
     mov ah,3fh
     mov bx,handle
     lea dx,fbuff
     mov cx,1     ;leer solo un btye
     int 21h
     cmp ax,0     ;revisa si leyo 0 bytes, si es 0, fin de archivo
-    jz finTXT    ;si leyo 0 bytes, brincar a fin de archivo
+    jz finTXT    ;si leyo 0 bytes, brincar a fin de archivo, revisar despues porque hay un error al terminar de leer el archivo sigue avanzando
     mov ah,'#'
     mov al,fbuff ;meter byte leido en al
     cmp ah,al    ;revisar si el caracter leido es un #
-    je imprespacios
+    je imprimirPantalla
     mov ah,'@'
     cmp ah,al    ;misma comparacion de arriba
     je loopCarros ;si es final de linea disminuye el contador
     mov  dl,fbuff ;no, load file character
+    mov [si], dl ;compia el caracter a la variable variable
+    inc si
+    jmp loopLeerTxt  ;repite la funcion hasta que se acabe
+
+    imprimirPantalla proc
+    mov cx, 14
+    lea si, variable
+    loopImprimir:
+    mov dl, [si]
     mov ah,2
     int 21h
-    jmp leerTXT  ;repite la funcion hasta que se acabe
+    inc si
+    loop loopImprimir
+    lea si, variable
+    mov cx, 14
+    limpiarVariable:
+    mov [si], ' '
+    inc si
+    loop limpiarVariable
+    jmp LeerTxt
+    imprimirPantalla endp
 
   leerTXT endp
 
@@ -102,20 +115,33 @@ pos_cursor macro col		;UN TIPO DE "METODO" QUE RECIBE 2 PARAMETROS
 
   finTXT:
     mov contador,10
+    .exit
     ret
 
 ;final del segmento de manipulacion del txt
 ;empieza segmento de procedimientos repetitivos
   salir: .exit
-
   loopCarros:
-  mov columna,3
+  mov cx, 14
+  lea si, variable
+  loopImprimir2:
+  mov dl, [si]
+  mov ah,2
+  int 21h
+  inc si
+  loop loopImprimir2
+  lea si, variable
+  mov cx, 14
+  limpiarVariable2:
+  mov [si], ' '
+  inc si
+  loop limpiarVariable2
   sub contador, 1  ;reduce el contador
   mov ah, contador
   mov al, 0
   cmp ah,al        ;si el contador es 0
   je finTXT        ;mandar a dejar de imprimir
-  jmp leerTXT
+  jmp LeerTxt
 
   saltoLinea proc near ;funcion super sencilla que me salta una linea en consola
   lea dx, salta
@@ -129,6 +155,9 @@ pos_cursor macro col		;UN TIPO DE "METODO" QUE RECIBE 2 PARAMETROS
   int 10h     ;sirve para limpiar la pantalla
   ret
   limpiarPantalla endp
+
+  saltos:
+  jmp salir
 
   teclaIncorrecta proc near ;funcion que imprime en pantalla que estripo una tecla invalida, dice las teclas validas y que intente de nuevo
   call saltoLinea
@@ -151,7 +180,7 @@ pos_cursor macro col		;UN TIPO DE "METODO" QUE RECIBE 2 PARAMETROS
   cmp ah,30h      ;30h == hexadecimal para B,revisa si la tecla estripada == B
   je jumpamoverHandle ; si lo es, llamar funcion que busca
   cmp ah,01h      ;01h == hexadecimal para esc, revisa si la tecla estripada == esc
-  je salir        ;si lo es, llamar funcion que termina programa
+  je saltos        ;si lo es, llamar funcion que termina programa
   cmp ah,31h      ;31h == hexadecimal para n, resiva si la tecla estripada == n
   je ingresarCarro
   call teclaIncorrecta ;si llego aqui significa que se presiono una tecla incorrecta
