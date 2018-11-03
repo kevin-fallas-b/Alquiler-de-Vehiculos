@@ -1,6 +1,9 @@
 .model small
 .stack 100h
 .data
+  mensaje db 'N: Nuevo, E: Eliminar, B: Buscar','$'
+  mensaje2 db ' para desplazar la lista','$'
+  atributosAutos db 'Placa         Marca         Anno          Peso          Color', '$'
   filename db 'vehiculo.txt',0
   teclaInc db 'Tecla incorrecta. flecha arriba o flecha abajo','$'
   salta db 10,13,'$'
@@ -21,7 +24,7 @@
   espacios db '     ','$'
   columna db 3
   carroNuevo db 100 dup('$')
-  variable db 16 dup (' '), '$'
+  variable db 14 dup (' '), '$'
 
 
 
@@ -50,10 +53,42 @@ pos_cursor macro col		;UN TIPO DE "METODO" QUE RECIBE 2 PARAMETROS
 .code
   .startup
     call limpiarPantalla
+    call menu
     call abrirTXT
     call leerTXT
     jmp esperarTecla; metodo que se encicla
     .exit
+
+    menu proc near
+
+    lea dx, mensaje
+    mov ah, 09h
+    int 21h
+    call saltoLinea
+    lea dx, teclaInc
+    mov ah, 09h
+    int 21h
+    lea dx, mensaje2
+    mov ah, 09h
+    int 21h
+    call saltoLinea
+    call msgAtributosAutos
+    call saltoLinea
+
+    ret
+
+    menu endp
+
+    msgAtributosAutos proc near
+
+    call saltoLinea
+    lea dx, atributosAutos
+    mov ah, 09h
+    int 21h
+    call saltoLinea
+
+    ret
+    msgAtributosAutos endp
 
 ;segmento de codigo que manipula el txt
   abrirTXT proc near
@@ -220,6 +255,7 @@ pos_cursor macro col		;UN TIPO DE "METODO" QUE RECIBE 2 PARAMETROS
 
   leerAdelante proc near ; metodo que limpia la pantalla e imprime los 10 proximos carros en el txt
     call limpiarPantalla
+    call menu
     ;verificar que haya algo que pueda leer, que no este en EOF
     call jumpaleerTXT
     jmp esperarTecla
@@ -227,6 +263,7 @@ pos_cursor macro col		;UN TIPO DE "METODO" QUE RECIBE 2 PARAMETROS
 
   leerAtras proc near ; metodo que limpia la pantalla e imprime los 10 carros anteriores en el txt
     call limpiarPantalla
+    call menu
     mov contador,20   ;el contador va en 20 porque ocupo retroceder las 10 que estan en pantalla, mas otras 10 que son las que voy a imrimir
     call moverHandleatras
     jmp esperartecla
