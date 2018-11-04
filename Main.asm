@@ -25,7 +25,7 @@
   columna db 3
   carroNuevo db 100 dup('$')
   variable db 14 dup (' '), '$'
-
+  endl db 0dh,0ah
 
 
 pos_cursor macro col		;UN TIPO DE "METODO" QUE RECIBE 2 PARAMETROS
@@ -150,39 +150,38 @@ pos_cursor macro col		;UN TIPO DE "METODO" QUE RECIBE 2 PARAMETROS
     ret
 
   escribirAtxt proc near
-  sig:
-    mov ah,3fh
+    mov bx, handle
+  loopsi:
+    mov ah,3fh     ;funcion normal de lectura solo que se repite hasta que llegue al final del archivo
     mov bx,handle
     lea dx,fbuff
     mov cx,1     ;leer solo un btye
     int 21h
-    cmp ax,0     ;revisa si leyo 0 bytes, si es 0, fin de archivo
-    jne sig
-    ;si llego aqui es que ya estoy al ginal del archivo
-    mov al, 1        ; relative to current file position
-    mov ah, 42h      ; service for seeking file pointer
+    cmp ax,0 ; si ax es = a 0 es porque llegó al final del archivo
+    jne loopsi
+    lea si,carroNuevo
+  loopescribir:
     mov bx, handle
-    mov cx, -1       ; upper half of lseek 32-bit offset (cx:dx)
-    mov dx, -1       ; moves file pointer one byte backwards (This is important)
+    mov cx, 1
+    lea dx, [si]
+    mov ah,40h ;escribe en el archivo
     int 21h
-    lea di,carroNuevo
-    mov ah, 40h          ;guarda en txt primer caracter
-    mov bx, handle       ;guarda en txt primer caracter
-    mov cx, 1            ;guarda en txt primer caracter
-    lea dx, [di]  ; buffer that holds the new character to be written
-    int 21
-  guar:
-    inc di
-    mov ah, 40h          ; service for writing to a file
-    mov bx, handle
-    mov cx, 1            ; number of bytes to write
-    lea dx, [di]  ; buffer that holds the new character to be written
-    int 21
-    cmp dx,40h
-    jne guar
-    ;ya escribio un arroba, terminar
-    mov ah,3eh
-    mov bx, handle
+    inc si
+    mov ah,[si]
+    cmp ah,'@'
+    jne loopescribir
+    mov bx, handle  ;se pone una vez mas para que escriba el @ final
+    mov cx, 1       ;se pone una vez mas para que escriba el @ final
+    lea dx, [si]    ;se pone una vez mas para que escriba el @ final
+    mov ah,40h      ;se pone una vez mas para que escriba el @ final
+    int 21h         ;se pone una vez mas para que escriba el @ final
+    mov bx, handle  ;meter un enter al final
+    mov cx, 2       ;meter un enter al final
+    lea dx, endl    ;hexadecimal para new line
+    mov ah,40h      ;
+    int 21h         ;
+    mov ah,3eh      ; cierra el archivo
+    int 21h
     ret
   escribirAtxt endp
 
@@ -310,6 +309,9 @@ jumpaFinTXT2:
     call limpiarPantalla
     call concatenarCarroNuevo
     call escribirAtxt
+    call limpiarPantalla
+    call esperarTecla
+    ;call leerTXT
 
   ingresarCarro endp
 
@@ -390,7 +392,6 @@ jumpaFinTXT2:
     mov al,40h
     mov [si],al
     inc si
-    imp_texto carroNuevo
     ret
   concatenarCarroNuevo ENDP
 
