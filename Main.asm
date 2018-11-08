@@ -758,7 +758,7 @@ jmp ingresarCarro
   int 21h
   jmp empiezaBorrar
 
-  terminaBorrar:
+  terminaBorrar:;
   call limpiarPantalla
   imp_texto bexito
   call saltoLinea
