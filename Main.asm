@@ -40,7 +40,6 @@
   carroNuevo db 100 dup('$')
   variable db 14 dup (' '), '$'
   endl db 0dh,0ah
-  findearchivo db 'Fin de archivo. No se puede leer.','$'
 
   imp_texto macro texto
 	  lea dx, texto
@@ -120,6 +119,9 @@
     mov al, fbuff ;meter byte leido en al
     cmp ah, al    ;revisar si el caracter leido es un #
     je imprimirPantalla
+    mov ah, '&'
+    cmp ah, al
+    je enconBorra
     mov ah, '@'
     cmp ah, al    ;misma comparacion de arriba
     je jumpaloopCarros ;si es final de linea disminuye el contador
@@ -127,6 +129,20 @@
     mov [si], dl ;compia el caracter a la variable variable
     inc si
     jmp loopLeerTxt  ;repite la funcion hasta que se acabe
+
+    enconborra proc near
+    cic:
+      mov ah, 3fh
+      mov bx, handle
+      lea dx, fbuff
+      mov cx, 1     ;leer solo un btye
+      int 21h
+      mov ah, 0ah
+      mov al, fbuff ;meter byte leido en al
+      cmp ah, al    ;revisar si el caracter leido es un #
+      jne cic
+      jmp loopLeerTxt
+    enconborra endp
 
     imprimirPantalla proc
 
@@ -285,27 +301,11 @@ jumpaFinTXT2:
 
 ;final del segmento repetitivo
 
-  NoPuedeLeer proc near
-    imp_texto findearchivo
-    jmp esperarTecla
-  NoPuedeLeer endp
   leerAdelante proc near ; metodo que limpia la pantalla e imprime los 10 proximos carros en el txt
-<<<<<<< HEAD
-      ;verificar que haya algo que pueda leer, que no este en EOF
-      ;ocupo revisar si ax=0, si lo es llamar esperar tecla
-    mov ah,3fh
-    mov bx,handle
-    lea dx,fbuff
-    mov cx,1     ;leer solo un btye
-    int 21h
-    cmp ax,0     ;revisa si leyo 0 bytes, si es 0, fin de archivo
-    jz NoPuedeLeer
-      ;fin verificar
-=======
 
->>>>>>> 9d87dcdf1b44c51c367b91f610662137f9e14bed
     call limpiarPantalla
     call menu
+    ;verificar que haya algo que pueda leer, que no este en EOF
     call jumpaleerTXT
     jmp esperarTecla
 
