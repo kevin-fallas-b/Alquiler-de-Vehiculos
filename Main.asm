@@ -26,6 +26,7 @@
   carroNuevo db 100 dup('$')
   variable db 14 dup (' '), '$'
   endl db 0dh,0ah
+  findearchivo db 'Fin de archivo. No se puede leer.','$'
 
 
 pos_cursor macro col		;UN TIPO DE "METODO" QUE RECIBE 2 PARAMETROS
@@ -258,10 +259,23 @@ jumpaFinTXT2:
 
 ;final del segmento repetitivo
 
+  NoPuedeLeer proc near
+    imp_texto findearchivo
+    jmp esperarTecla
+  NoPuedeLeer endp
   leerAdelante proc near ; metodo que limpia la pantalla e imprime los 10 proximos carros en el txt
+      ;verificar que haya algo que pueda leer, que no este en EOF
+      ;ocupo revisar si ax=0, si lo es llamar esperar tecla
+    mov ah,3fh
+    mov bx,handle
+    lea dx,fbuff
+    mov cx,1     ;leer solo un btye
+    int 21h
+    cmp ax,0     ;revisa si leyo 0 bytes, si es 0, fin de archivo
+    jz NoPuedeLeer
+      ;fin verificar
     call limpiarPantalla
     call menu
-    ;verificar que haya algo que pueda leer, que no este en EOF
     call jumpaleerTXT
     jmp esperarTecla
   leerAdelante endp
