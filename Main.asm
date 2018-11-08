@@ -35,6 +35,7 @@
   peso db '$$$$$$$$'
   pedirColor db 'Por favor digite el color del carro.','$'
   color db '$$$$$$$$'
+  findearchivo db 'Fin de archivo. No se puede leer.','$'
   espacios db '     ','$'
   columna db 3
   carroNuevo db 100 dup('$')
@@ -69,6 +70,11 @@
     fin:
     .exit
     inicio endp
+
+  NoPuedeLeer proc near
+   imp_texto findearchivo
+   jmp esperarTecla
+  NoPuedeLeer endp
 
     menu proc near
 
@@ -250,6 +256,10 @@ jumpaFinTXT2:
   je jumpaFinTXT2        ;mandar a dejar de imprimir
   jmp LeerTxt
 
+  jumpNopuedeLeer:
+    jmp NoPuedeLeer
+    ret
+
   saltoLinea proc near ;funcion super sencilla que me salta una linea en consola
 
     lea dx, salta
@@ -302,7 +312,15 @@ jumpaFinTXT2:
 ;final del segmento repetitivo
 
   leerAdelante proc near ; metodo que limpia la pantalla e imprime los 10 proximos carros en el txt
-
+    ;verificar que haya algo que pueda leer, que no este en EOF
+    ;ocupo revisar si ax=0, si lo es llamar esperar tecla
+    mov ah,3fh
+    mov bx,handle
+    lea dx,fbuff
+    mov cx,1     ;leer solo un btye
+    int 21h
+    cmp ax,0     ;revisa si leyo 0 bytes, si es 0, fin de archivo
+    jz jumpNopuedeLeer
     call limpiarPantalla
     call menu
     ;verificar que haya algo que pueda leer, que no este en EOF
@@ -312,7 +330,6 @@ jumpaFinTXT2:
   leerAdelante endp
 
   leerAtras proc near ; metodo que limpia la pantalla e imprime los 10 carros anteriores en el txt
-
     call limpiarPantalla
     call menu
     mov contador, 20   ;el contador va en 20 porque ocupo retroceder las 10 que estan en pantalla, mas otras 10 que son las que voy a imrimir
