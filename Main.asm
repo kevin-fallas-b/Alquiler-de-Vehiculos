@@ -1,9 +1,11 @@
 .model small
 .stack 100h
 .data
+  amperson db '&','$'
+  bexito db 'Borrado correctamente','$'
   iexito db 'Insertado correctamente','$'
   nInsertar db 'N: nuevo auto','$'
-  nBusqueda db 'N: nueva busqueda'
+  nBusqueda db 'N: nueva busqueda','$'
   vMenu db 'M: volver al menu','$'
   fbuff2 db ' ','$'
   mensaje db 'N: Nuevo, B: Buscar, ','$'
@@ -491,7 +493,8 @@ jmp ingresarCarro
   moverHandleatras endp
 
   buscarCarro proc
-
+    mov ah,3eh  ;Cierre de archivo
+    int 21h
     call limpiarPantalla
     imp_texto digitePlaca
     call pedirDatosBuscar
@@ -532,10 +535,9 @@ jmp ingresarCarro
 
   buscar proc
 
+
+
     lea si, placa2
-    mov bx, handle
-    mov ah,3eh ;cierra el archivo
-    int 21h
     call abrirTXT
     mov bx, handle
 
@@ -653,6 +655,8 @@ jmp ingresarCarro
       je inicioJmp
       cmp ah, 31h
       je nuevaBusqueda
+      cmp ah, 30h
+      je eliminar
       .exit
 
       noEncontrado:
@@ -666,6 +670,7 @@ jmp ingresarCarro
       int 16h       ; int 16h es la encargada de controlar el teclado
       cmp ah, 31h
       je nuevaBusqueda
+      cmp ah, 42h
       jmp inicio
       .exit
 
@@ -674,4 +679,83 @@ jmp ingresarCarro
 
   eliminar:
 
+
+
+  retrocedeUno:
+
+  mov bx, handle
+  mov ah, 42h      ; busca el puntero del archivo
+  mov al, 1
+  mov cx, -1       ; upper half of lseek 32-bit offset (cx:dx)
+  mov dx, -1      ; mueve el puntero 2 posiciones atras porque vamos a leer una hacia adelante
+  int 21h
+
+  mov ah, 3fh
+  lea dx, fbuff
+  mov cx, 1
+  int 21h
+
+  mov al, fbuff
+  cmp al, 0Ah
+  je empiezaBorrar
+
+
+  retrocedeDos:
+
+  mov bx, handle
+  mov ah, 42h      ; busca el puntero del archivo
+  mov al, 1
+  mov cx, -1       ; upper half of lseek 32-bit offset (cx:dx)
+  mov dx, -1      ; mueve el puntero 2 posiciones atras porque vamos a leer una hacia adelante
+  int 21h
+  jmp retrocedeUno
+
+ inicioJmp1:
+ jmp inicio
+
+ nuevaBusquedajmp:
+ jmp buscarCarro
+
+  empiezaBorrar:
+
+  mov ah, 3fh
+  lea dx, fbuff
+  mov cx, 1
+  int 21h
+
+  mov al, fbuff
+  cmp al, '@'
+  je terminaBorrar
+
+  mov bx, handle
+  mov ah, 42h      ; busca el puntero del archivo
+  mov al, 1
+  mov cx, -1       ; upper half of lseek 32-bit offset (cx:dx)
+  mov dx, -1      ; mueve el puntero 2 posiciones atras porque vamos a leer una hacia adelante
+  int 21h
+
+  mov bx, handle
+  mov cx, 1
+  lea dx, amperson
+  mov ah,40h ;escribe en el archivo
+  int 21h
+  jmp empiezaBorrar
+
+  terminaBorrar:
+  call limpiarPantalla
+  imp_texto bexito
+  call saltoLinea
+  imp_texto vMenu
+  call saltoLinea
+  imp_texto nBusqueda
+  mov ah, 0      ;0 en ah dice que recibe la tecla estripada
+  int 16h       ; int 16h es la encargada de controlar el teclado
+  cmp ah, 31h
+  je nuevaBusquedajmp
+  cmp ah, 32h
+  mov ah,3eh  ;Cierre de archivo
+  int 21h
+  jmp inicioJmp1
+
+  .exit
 end
