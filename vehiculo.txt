@@ -1,4 +1,4 @@
-12323GT#Nissan#2003#346Kg#Rojo@
+
 12YYH521#BMW#2017#346Kg#Azul@
 155G323#Audi#2008#700Kg#Rojo@
 123FR23#Toyota#2000#3333kg#Azul@
@@ -74,3 +74,6 @@ WWSWXSX#Nissan#2008#460kg#Naranja@
 eeregg3#Opel#2017#800kg#Amarillo@
 12gfg23#Nissan#2008#700kg#Rojo@
 1232263#BMW#2018#600kg#Negro@
+1234#toyota#1986#1000kg#blanco@
+BTY 099#SUSUKI#2015#1500KG#BLANCO@
+abcd90#toyota#1988#3000kg#blanco@
