@@ -72,8 +72,15 @@
     inicio endp
 
   NoPuedeLeer proc near
-   imp_texto findearchivo
-   jmp esperarTecla
+   imp_texto findearchivo; cambiar esto a que mande al principio de archivo
+   ;ocupo revisar si ax=0, si lo es llamar esperar tecla
+    mov al, 00        ; relative to current file position
+    mov ah, 42h      ; service for seeking file pointer
+    mov bx, handle
+    mov cx, 0       ; upper half of lseek 32-bit offset (cx:dx)
+    mov dx, 0       ; moves file pointer one byte backwards (This is important)
+    int 21h
+    jmp leerAdelante
   NoPuedeLeer endp
 
     menu proc near
@@ -128,6 +135,8 @@
     mov ah, '&'
     cmp ah, al
     je enconBorra
+    mov ah, '*'
+    je loopLeerTxt
     mov ah, '@'
     cmp ah, al    ;misma comparacion de arriba
     je jumpaloopCarros ;si es final de linea disminuye el contador
@@ -184,6 +193,9 @@
     jmp loopCarros
     ret
 
+  jumpNoPuedeLeer2:
+    jmp NoPuedeLeer
+    ret
   escribirAtxt proc near
 
     mov bx, handle
@@ -256,9 +268,7 @@ jumpaFinTXT2:
   je jumpaFinTXT2        ;mandar a dejar de imprimir
   jmp LeerTxt
 
-  jumpNopuedeLeer:
-    jmp NoPuedeLeer
-    ret
+
 
   saltoLinea proc near ;funcion super sencilla que me salta una linea en consola
 
@@ -274,7 +284,6 @@ jumpaFinTXT2:
     mov ax,03h  ;sirve para limpiar la pantalla
     int 10h     ;sirve para limpiar la pantalla
     ret
-
   limpiarPantalla endp
 
   saltos:
@@ -289,6 +298,10 @@ jumpaFinTXT2:
     jmp esperarTecla
 
   teclaIncorrecta endp
+
+  jumpNopuedeLeer:
+    jmp jumpNoPuedeLeer2
+    ret
 
   esperarTecla:;metodo que se encicla mientras el programa esta activo
 
@@ -330,6 +343,19 @@ jumpaFinTXT2:
   leerAdelante endp
 
   leerAtras proc near ; metodo que limpia la pantalla e imprime los 10 carros anteriores en el txt
+    mov al, 1
+    mov ah, 42h      ; busca el puntero del archivo
+    mov bx, handle
+    mov cx, -1       ; upper half of lseek 32-bit offset (cx:dx)
+    mov dx, -2       ; mueve el puntero 2 posiciones atras porque vamos a leer una hacia adelante
+    int 21h
+    mov ah, 3fh      ;este codigo de abajo lee un byte hacia adelante
+    mov bx, handle
+    lea dx, fbuff
+    mov cx, 1        ;movi el handle 2 atras, ahora leo uno adelante, efectivamente leyendo la posicion anterior a la que comence
+    int 21h
+    cmp ax, 0        ;revisa si leyo 0 bytes, si es 0, fin de archivo
+    jz jumpNoPuedeLeer
     call limpiarPantalla
     call menu
     mov contador, 20   ;el contador va en 20 porque ocupo retroceder las 10 que estan en pantalla, mas otras 10 que son las que voy a imrimir
@@ -511,11 +537,18 @@ jmp ingresarCarro
     int 21h
     cmp ax, 0        ;revisa si leyo 0 bytes, si es 0, fin de archivo
     jz segundojumpaFinTXT       ;si leyo 0 bytes, brincar a fin de archivo
-    mov ah, '@'
+
+
     mov al, fbuff    ;meter byte leido en al
+    mov ah, '*'
+    cmp ah, al
+    je reducircontador
+    mov ah, '@'
     cmp ah, al       ;revisar si el caracter leido es un @
     jne moverHandleatras ;si no lo es, seguir leyendo hacia atras
+    reducircontador:
     sub contador, 1  ;reduce el contador
+
     mov ah, contador
     mov al, 0
     cmp ah, al        ;si el contador es 0
