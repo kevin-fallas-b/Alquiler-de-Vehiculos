@@ -9,7 +9,7 @@
 12HH323#Fiat#2009#400kg#Blanco@
 123HHH2#BMW#2007#399kg#Morado@
 1232GGT#Bentley#2017#450kg#Rojo@
-123DGYY#BMW#2010#456kg#Morado2
+123DGYY#BMW#2010#456kg#Morado@
 126GJFY#Nissan#2018#600kg#Rojo@
 12FSA23#Toyota#1999#800kg#Celeste@
 12D5553#Bentley#2015#700kg#Blanco@
